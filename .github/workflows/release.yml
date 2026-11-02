@@ -94,7 +94,7 @@ jobs:
           "sign=$("$sign".ToLower())" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           if (-not $sign) { Write-Host "::notice::Not signing (needs a tag run and the SIGNPATH_ORGANIZATION_ID variable). This installer will be UNSIGNED: Windows SmartScreen shows 'unknown publisher'. See RELEASING.md." }
 
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
