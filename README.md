@@ -10,6 +10,20 @@ exports. On both apps a deleted item goes to the Trash for 30 days, with Undo.
 
 Website and docs: https://kapevault.brewedops.cloud
 
+## Before you trust it
+
+- **One person built it, with AI.** No company and no security team. It was planned, written, tested and
+  fixed with AI coding tools.
+- **No outside audit yet.** Every review so far was AI-assisted: several self-audits, each finding fixed and
+  published ([SECURITY-AUDIT-2026-09-28.md](SECURITY-AUDIT-2026-09-28.md)). No paid security firm has
+  checked it.
+- **Start small.** It is new. Try it with a few accounts, print your Emergency Kit, and keep your current
+  password manager until you trust it.
+- **Check it yourself.** GitHub builds the Windows installer from this public code, with build provenance
+  and a SHA-256 ([Verify a download](#verify-a-download)). The known limits are in
+  [docs/THREAT-MODEL.md](docs/THREAT-MODEL.md#known-limitations).
+- **Found a hole?** Report it privately: [SECURITY.md](SECURITY.md).
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/pc-main-dark.webp">
   <img src="docs/screenshots/pc-main.webp" alt="KAPEVault on Windows: the item list, with a GitHub login open showing its password, live 2FA code and website">
