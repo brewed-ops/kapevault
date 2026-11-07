@@ -133,6 +133,7 @@ async function screen(app, name, quick = false) {
   await open("Old forum", "v2-security.png");
   await page.locator("aside").getByText("All items").click();
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: "Generate password" }).click();
   await page.waitForTimeout(400);
   await screen(app, "v2-generator.png");

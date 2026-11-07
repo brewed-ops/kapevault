@@ -4,6 +4,7 @@
 import * as appleCsv from "./apple-csv.js";
 import * as bitwardenCsv from "./bitwarden-csv.js";
 import * as bitwardenJson from "./bitwarden-json.js";
+import * as bookmarksHtml from "./bookmarks-html.js";
 import * as browserCsv from "./browser-csv.js";
 import * as firefoxCsv from "./firefox-csv.js";
 import * as keepassCsv from "./keepass-csv.js";
@@ -32,6 +33,7 @@ const CSV_SOURCES = [
  */
 export function parseExport(text) {
   const body = text.replace(/^﻿/, "");
+  if (bookmarksHtml.matches(body)) return { source: "bookmarks", label: bookmarksHtml.label, ...bookmarksHtml.parse(body) };
   if (/^\s*[{[]/.test(body)) {
     let json;
     try {

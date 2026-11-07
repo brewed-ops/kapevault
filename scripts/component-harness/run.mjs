@@ -160,7 +160,7 @@ const activeName = (page) =>
 for (const [w, h] of [[400, 560], [1440, 900]]) {
   const page = await open("new", w, h);
   const dialog = page.getByRole("dialog");
-  for (const k of ["Login", "Secure note", "API key", "File link"]) {
+  for (const k of ["Login", "Secure note", "API key", "Link"]) {
     await dialog.getByRole("button", { name: k, exact: true }).click();
     const o = await noOverflow(page);
     check(`${w}px ${k}: no overflow`, o.page && o.dialog && o.wide.length === 0, JSON.stringify(o.wide));
@@ -289,7 +289,7 @@ for (const [w, h] of [[400, 560], [1440, 900]]) {
   let saved = await save();
   check("thing: room, spot and grab saved", saved.kind === "thing" && saved.spot === "Mock drawer" && saved.grab === 1 && saved.room === "", JSON.stringify(saved));
 
-  await kindTile("File link").click();
+  await kindTile("Link").click();
   await dialog.getByPlaceholder(/drive.google.com/).fill("https://drive.example.com/mock");
   await dialog.getByPlaceholder("GitHub").fill("Mock folder");
   saved = await save();

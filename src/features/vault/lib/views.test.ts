@@ -12,6 +12,12 @@ test("one row per view, each id once", () => {
   assert.deepEqual([...ids].sort(), ["all", "closed", "closing", "device", "favorites", "id", "key", "link", "login", "note", "security", "thing", "totp", "trash"]);
 });
 
+test("Links sits right under All items, named Links", () => {
+  assert.deepEqual(VIEWS.slice(0, 2).map((v) => v.id), ["all", "link"]);
+  assert.equal(viewOf("link").label, "Links");
+  assert.equal(viewOf("link").heading, "Links");
+});
+
 test("only the lists that are often empty hide while they hold nothing", () => {
   assert.deepEqual(VIEWS.filter((v) => v.hideWhenEmpty).map((v) => v.id), ["thing", "device", "id", "closing", "closed", "trash"]);
 });
@@ -28,6 +34,7 @@ test("a kind's own list makes that kind, and holds it", () => {
     assert.equal(view.newKind, e.kind);
     assert.equal(matchesView(e, view.id), true);
   }
-  assert.equal(viewOf("login").newKind, undefined); // a new item defaults to a login anyway
+  for (const v of ["login", "totp", "security", "closing", "closed"] as const) assert.equal(viewOf(v).newKind, "login"); // the account lists keep starting a login
+  for (const v of ["all", "favorites", "trash"] as const) assert.equal(viewOf(v).newKind, undefined); // App.tsx starts a link there
   assert.equal(matchesView(login(), "login"), true);
 });

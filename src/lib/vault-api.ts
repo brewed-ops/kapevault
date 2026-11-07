@@ -231,7 +231,7 @@ interface KAPEVaultBridge {
   // source = the manager the file came from; notes = what was changed on the way; unreadable = rows that
   // could not become items, counted by reason (skipped = already in the vault; kept = rows left out that
   // held something, so the file was not deleted)
-  importFile(): Promise<{ ok: true; added: number; skipped: number; kept: number; vault: VaultView; deleted: boolean; name: string; source: string; notes: string[]; unreadable: { reason: string; count: number }[] } | { ok: false; canceled?: boolean; error?: string }>;
+  importFile(): Promise<{ ok: true; added: number; skipped: number; kept: number; vault: VaultView; deleted: boolean; plain: boolean; name: string; source: string; notes: string[]; unreadable: { reason: string; count: number }[] } | { ok: false; canceled?: boolean; error?: string }>;
   biometricStatus(): Promise<BiometricStatus>;
   biometricEnable(): Promise<Attempt<{ status: BiometricStatus }>>;
   biometricDisable(): Promise<BiometricStatus>;

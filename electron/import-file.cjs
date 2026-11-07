@@ -7,7 +7,9 @@ const { parseExport, ImportRefused, lostRows } = require("../core/importers/inde
 
 const IMPORT_FORMATS = ["kapevault-import", "bovault-import"]; // bovault-import = files made before the rename
 const IMPORT_MAX_BYTES = 5 * 1024 * 1024;
-const NOT_AN_IMPORT = "KAPEVault cannot read that file. Use a KAPEVault import file or a .csv / .json export from Bitwarden, 1Password, KeePass, Chrome, Edge, Brave, Firefox, Apple Passwords or LastPass.";
+// Sources whose file holds no secret: it is the person's own browser data, never shredded or offered for deletion.
+const PLAIN_SOURCES = new Set(["bookmarks"]);
+const NOT_AN_IMPORT = "KAPEVault cannot read that file. Use a KAPEVault import file or a .csv / .json export from Bitwarden, 1Password, KeePass, Chrome, Edge, Brave, Firefox, Apple Passwords or LastPass, or a bookmarks .html file from Chrome, Edge, Brave or Firefox.";
 
 // Reads and checks an import file: a real file under IMPORT_MAX_BYTES (a leading BOM from Notepad is
 // dropped), either a KAPEVault import file (format kapevault-import or bovault-import, version 1) or an
@@ -58,7 +60,8 @@ function summarizeSkipped(skipped) {
 // The file holds every password in plain text, but it is also the only copy of any row that did not
 // come in, so it is deleted only when every row was added or was an exact copy of an item already in
 // the vault. `kept` counts the rows that were not (the file stays); `unreadable` says why.
-// Returns { ok: false, error } or { ok: true, added, skipped, kept, deleted, vault, name, source, notes, unreadable }.
+// A bookmarks file (PLAIN_SOURCES) is never deleted: `plain` is true and `deleted` false, and the page says nothing about the file.
+// Returns { ok: false, error } or { ok: true, added, skipped, kept, deleted, plain, vault, name, source, notes, unreadable }.
 function importPicked(filePath, vault) {
   let picked;
   try {
@@ -78,8 +81,9 @@ function importPicked(filePath, vault) {
   }
   const kept = lostRows(picked.skipped).length;
   // The import is saved either way; a failed delete (file open in an editor) is reported, not fatal.
-  const deleted = kept === 0 && shredFile(picked.file);
-  return { ok: true, added: result.added, skipped: result.skipped, kept, deleted, vault: result.vault, name: path.basename(picked.file), source: picked.label, notes: picked.notes, unreadable };
+  const plain = PLAIN_SOURCES.has(picked.source);
+  const deleted = !plain && kept === 0 && shredFile(picked.file);
+  return { ok: true, added: result.added, skipped: result.skipped, kept, deleted, plain, vault: result.vault, name: path.basename(picked.file), source: picked.label, notes: picked.notes, unreadable };
 }
 
 // Zeros go over the file first, flushed, then it is deleted. That is not a secure erase: an SSD, a

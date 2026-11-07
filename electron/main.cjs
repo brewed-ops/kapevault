@@ -15,6 +15,7 @@ const { createAirWall } = require("./air-wall.cjs");
 const { createUpdates } = require("./updates.cjs");
 const { installFolderWriters } = require("./install-folder.cjs");
 const { migrateLegacyData } = require("./legacy-data.cjs");
+const { prepareDataFolder } = require("./data-folder.cjs");
 const { openerHtml, openerKey } = require("./opener.cjs");
 const { createFolderCopy } = require("./folder-copy.cjs");
 const { createClipboard } = require("./clipboard.cjs");
@@ -58,7 +59,12 @@ hardening.refuseDebugging(app);
 const devEnv = app.isPackaged ? {} : process.env;
 hardening.blockNameLookups(app, devEnv.KAPEVAULT_DEV_URL);
 const dataDir = devEnv.KAPEVAULT_DATA_DIR || app.getPath("userData");
-fs.mkdirSync(dataDir, { recursive: true });
+const dataFolderProblem = prepareDataFolder(dataDir);
+if (dataFolderProblem) {
+  // Everything below needs this folder. process.exit, not app.exit: app.exit lets this file run on.
+  dialog.showErrorBox(dataFolderProblem.title, dataFolderProblem.message);
+  process.exit(1);
+}
 // A test run gets its own profile, so its single-instance lock never collides with the real app.
 if (devEnv.KAPEVAULT_DATA_DIR) app.setPath("userData", dataDir);
 // Two windows writing one vault file would clobber each other. exit() stops now; quit() is async.

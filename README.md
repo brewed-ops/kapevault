@@ -1,24 +1,40 @@
 # KAPEVault
 
-An encrypted password vault for Windows and Android that keeps everything on your own devices.
-There is no KAPEVault account and no KAPEVault server.
+Open any link, file or folder in two keys.
 
-It stores logins (including Sign in with Google logins), 2FA codes, IDs, secure notes, API keys,
-devices, things and links to files and folders, all in one encrypted file. On Windows it
-imports from Bitwarden, 1Password, KeePass, Chrome, Edge, Brave, Firefox, Apple Passwords and LastPass
-exports. On both apps a deleted item goes to the Trash for 30 days, with Undo.
+KAPEVault is a private home for the links you work from, on Windows and Android: web links, Google
+Drive files, local folders and docs, in one vault encrypted on your own device. On Windows, press
+**Ctrl+Shift+Space** in any app, type a few letters, press Enter, and the right one opens. There is no
+KAPEVault account and no KAPEVault server.
+
+- **Bring your bookmarks.** Export them from Chrome, Edge, Brave or Firefox (the HTML bookmarks file) and
+  import it on Windows. Each bookmark becomes a link, and its folder becomes a tag.
+- **One space per client.** Keep each client's Drive folders, docs and links together, and switch with
+  one click.
+- **Folders you can look inside.** Link a folder and browse it in the vault; PDFs, images, video and
+  Markdown open in a preview.
+- **On your phone too.** The same vault on Android, searchable and fully editable.
+
+It can also hold logins (including Sign in with Google logins), 2FA codes, IDs, secure notes, API keys,
+devices and things, and on Windows it imports password exports from Bitwarden, 1Password, KeePass,
+Chrome, Edge, Brave, Firefox, Apple Passwords and LastPass. Read
+[Before you trust it](#before-you-trust-it) before you put passwords in. On both apps a deleted item goes
+to the Trash for 30 days, with Undo.
 
 Website and docs: https://kapevault.brewedops.cloud
 
 ## Before you trust it
 
+- **Passwords only if you know the risk.** KAPEVault is young and unaudited. If you are not sure what
+  that means for you, keep your passwords in an established password manager and use KAPEVault for your
+  links.
 - **One person built it, with AI.** No company and no security team. It was planned, written, tested and
   fixed with AI coding tools.
 - **No outside audit yet.** Every review so far was AI-assisted: several self-audits, each finding fixed and
   published ([SECURITY-AUDIT-2026-09-28.md](SECURITY-AUDIT-2026-09-28.md)). No paid security firm has
   checked it.
-- **Start small.** It is new. Try it with a few accounts, print your Emergency Kit, and keep your current
-  password manager until you trust it.
+- **Start small.** It is new. Start with a few links, print your Emergency Kit, and keep a copy of
+  anything you cannot afford to lose somewhere else.
 - **Check it yourself.** GitHub builds the Windows installer from this public code, with build provenance
   and a SHA-256 ([Verify a download](#verify-a-download)). The known limits are in
   [docs/THREAT-MODEL.md](docs/THREAT-MODEL.md#known-limitations).
@@ -26,10 +42,10 @@ Website and docs: https://kapevault.brewedops.cloud
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/pc-main-dark.webp">
-  <img src="docs/screenshots/pc-main.webp" alt="KAPEVault on Windows: the item list, with a GitHub login open showing its password, live 2FA code and website">
+  <img src="docs/screenshots/pc-main.webp" alt="KAPEVault on Windows: a client's space with Google Drive folders, a Doc, a local folder and web links, the Brand assets Drive folder open">
 </picture>
 
-On Android: your items, one login with its 2FA code, and, with KAPEVault Pro (a one-time Google Play
+On Android: your items, one item open, and, with KAPEVault Pro (a one-time Google Play
 purchase), sync with your PC through your own bucket. Pro is checked by the app alone, with no server,
 and the source is GPL: anyone can build it with Pro unlocked. Buying it supports the project. A build
 without Google Play code (F-Droid, or building it yourself with `npm run apk:release:foss` in `mobile/`)
@@ -38,7 +54,7 @@ cannot buy Pro.
 <p>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/phone-home-dark.webp">
-    <img src="docs/screenshots/phone-home.webp" width="32%" alt="KAPEVault on Android: the item list">
+    <img src="docs/screenshots/phone-home.webp" width="32%" alt="KAPEVault on Android: a list of Drive folders, docs, a folder link and web links">
   </picture>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/phone-detail-dark.webp">
@@ -94,8 +110,11 @@ cannot buy Pro.
       <br><b>Lock screen.</b> The master password unlocks the vault on this PC.
     </td>
     <td width="50%">
-      <img src="docs/screenshots/pc-security.webp" alt="The Security view listing a weak password, reused passwords and an expiring API token">
-      <br><b>Security check.</b> Weak, reused and expiring items, with a way to fix each.
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/pc-quick-search-dark.webp">
+        <img src="docs/screenshots/pc-quick-search.webp" alt="Quick Search opened with Ctrl+Shift+Space, a Google Drive folder link selected">
+      </picture>
+      <br><b>Quick Search.</b> Ctrl+Shift+Space in any app, a few letters, Enter: the link opens.
     </td>
   </tr>
   <tr>

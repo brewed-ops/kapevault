@@ -206,6 +206,12 @@ An app that asks the autofill service for a login it should not get.
   message.
   The file is overwritten with zeros and deleted after a successful import; on an SSD or a synced folder
   that is not a secure erase, and the app says only "deleted".
+- **Browser bookmarks (PC):** the Netscape HTML export from Chrome, Edge, Brave or Firefox, same limits.
+  It is read with a plain text parser and no DOM (`core/importers/bookmarks-html.js`); only http and
+  https addresses are imported, and `javascript:`, `file:`, `data:`, `chrome:`, `about:`, `edge:` and
+  `place:` entries are skipped. Titles and addresses are untrusted text, and opening a link still goes
+  through the http/https-only rule. The file holds no secret, so it is never shredded or deleted
+  (`PLAIN_SOURCES` in `electron/import-file.cjs`).
 - **A vault or backup from someone else:** header-checked, then the decrypted JSON is treated as
   untrusted: wrong-typed fields and non-JPEG photos dropped, bad or repeated ids dropped, nesting deeper
   than 24 refused, a `cloud` block that is not an R2 bucket dropped (`core/clean-vault.js`).

@@ -15,7 +15,7 @@ app.whenReady().then(() => {
     cwd: repo,
     icon: path.join(repo, "build", "icon.ico"),
     iconIndex: 0,
-    description: "KAPEVault - passwords and file links",
+    description: "KAPEVault - links and passwords",
     appUserModelId: "com.brewedops.kapevault",
   });
   console.log(ok ? `Start menu shortcut written: ${link}` : "Could not write the shortcut");

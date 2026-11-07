@@ -16,7 +16,7 @@ const GROUPS: { title: string; items: [string, string][] }[] = [
   {
     title: "Use the selected item",
     items: [
-      ["Enter", "Copy password (or open a file link)"],
+      ["Enter", "Copy password (or open a link)"],
       [keys("mod", "C"), "Copy username"],
       [keys("mod", "shift", "C"), "Copy password"],
       [keys("mod", "alt", "C"), "Copy 2FA code"],

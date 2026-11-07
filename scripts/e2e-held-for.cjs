@@ -52,6 +52,7 @@ const PASSWORD = "Mock-Lola-Bank-Pass-7";
 
   // ---- The field: typed on a new login, then suggested on the next item
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByPlaceholder("GitHub").fill("Mock Rural Bank");
   await dialog.getByText("Username or email").locator("..").locator("input").fill("mock.lola");
   await dialog.locator("input[type='password']").fill(PASSWORD);

@@ -19,14 +19,14 @@ export function ImportSection({ onImported }: { onImported: (vault: VaultView) =
       return;
     }
     onImported(result.vault);
-    setNote({ lines: importLines(result), error: !result.deleted });
+    setNote({ lines: importLines(result), error: !result.deleted && !result.plain });
   }
 
   return (
     <Group title="Import">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
         <p className="min-w-[220px] flex-1 text-[13px] text-ink-3">
-          Add logins and secure notes from an export (.csv or .json) of Bitwarden (not encrypted), 1Password, KeePass or KeePassXC, Chrome, Edge, Brave, Firefox, Apple Passwords or LastPass, or from a KAPEVault import file. Folders become tags, and cards come in as secure notes. Items already in the vault are skipped. The file is deleted afterwards, since it holds every password in plain text, unless something in it could not be imported.
+          Bring in your browser bookmarks: the HTML file Chrome, Edge, Brave or Firefox exports. Each one becomes a link, with its folder as a tag, and the file is left as it is. It also reads a KAPEVault import file and password exports (.csv or .json) from Bitwarden (not encrypted), 1Password, KeePass or KeePassXC, Chrome, Edge, Brave, Firefox, Apple Passwords or LastPass, where folders become tags and cards become secure notes. A password file is deleted afterwards, since it holds every password in plain text, unless something in it could not be imported. Items already in the vault are skipped.
         </p>
         <Button type="button" className="shrink-0" disabled={importing} onClick={importFile}>
           Import file...

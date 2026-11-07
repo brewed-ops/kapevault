@@ -7,14 +7,19 @@ import { signInOption } from "./sign-in";
 
 // The kind picker, in the phone's order (core's KINDS in another; kinds.test.mjs holds the two sets equal).
 export const KINDS: { value: EntryKind; label: string }[] = [
+  { value: "link", label: "Link" },
   { value: "login", label: "Login" },
   { value: "note", label: "Secure note" },
   { value: "key", label: "API key" },
-  { value: "link", label: "File link" },
   { value: "thing", label: "Thing" },
   { value: "device", label: "Device" },
   { value: "id", label: "ID" },
 ];
+
+// What a new item starts as, from the list being looked at (the PC's newKind in views.ts): a kind's own list
+// makes that kind, the account lists make a login, everything else (All items, Favorites, a client) a link.
+const OWN_KIND_VIEWS: Record<string, EntryKind> = { note: "note", key: "key", link: "link", thing: "thing", device: "device", id: "id", login: "login", totp: "login", security: "login", closing: "login", closed: "login" };
+export const newKindFor = (scope: object): EntryKind => ("view" in scope && typeof scope.view === "string" ? OWN_KIND_VIEWS[scope.view] : undefined) ?? "link";
 
 // The ways to sign in are the PC's list: SIGN_IN_OPTIONS in lib/sign-in.ts, made from it by sync-shared.
 export const signInLabel = (m: SignInMethod) => signInOption(m).label;

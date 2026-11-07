@@ -12,7 +12,7 @@ import { More } from "./inputs";
 import { DeviceFields, DeviceTypeField, ExpiresField, KeyFields, LinkFields, NoteFields, SpaceField, ThingFields, TitleField } from "./OtherFields";
 import { IdFields } from "./IdFields";
 import { useItemForm } from "./use-item-form";
-import type { Entry, Space } from "../../host/types";
+import type { Entry, EntryKind, Space } from "../../host/types";
 
 interface ItemSheetProps {
   entry: Entry | null; // null = new item
@@ -20,6 +20,7 @@ interface ItemSheetProps {
   spaces: Space[];
   defaultSpaceId: string;
   defaultHeldFor?: string;
+  defaultKind?: EntryKind; // a new item's starting kind
   pro: boolean; // KAPEVault Pro owned, from HomeScreen's status
   onSaved: (id: string) => void;
   onDeleted: (id: string) => void;
@@ -30,11 +31,11 @@ const TITLE_HINT = { login: "GitHub", note: "Server steps", key: "Cloudflare API
 
 // The PC's New item sheet, tall, with the kind tiles (3 + 3 + 2), the kind's fields, More
 // options, and Cancel / Save in its footer, bottom right. It ends above the keyboard, so Save stays visible.
-export function ItemSheet({ entry, entries, spaces, defaultSpaceId, defaultHeldFor, pro, onSaved, onDeleted, onClose }: ItemSheetProps) {
+export function ItemSheet({ entry, entries, spaces, defaultSpaceId, defaultHeldFor, defaultKind, pro, onSaved, onDeleted, onClose }: ItemSheetProps) {
   const host = useHost();
   const toast = useToast();
   const moveToTrash = useMoveToTrash();
-  const { draft, set, autoTitle, problem, input, showPhoto } = useItemForm(entry, defaultSpaceId, defaultHeldFor);
+  const { draft, set, autoTitle, problem, input, showPhoto } = useItemForm(entry, defaultSpaceId, defaultHeldFor, defaultKind);
   const [more, setMore] = useState(Boolean(draft.tags || draft.heldFor));
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);

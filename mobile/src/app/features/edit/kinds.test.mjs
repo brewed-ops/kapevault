@@ -2,10 +2,20 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import * as core from "../../../../../core/index.js";
-import { DEVICE_TYPES, GRAB, KINDS, LINK_TYPES } from "../../lib/entries.ts";
+import { DEVICE_TYPES, GRAB, KINDS, LINK_TYPES, newKindFor } from "../../lib/entries.ts";
 
 test("the kind picker offers every kind core saves, in the phone's own order", () => {
   assert.deepEqual(KINDS.map((k) => k.value).sort(), [...core.KINDS].sort());
+});
+
+test("Link comes first in the picker, as on the PC", () => {
+  assert.deepEqual(KINDS.slice(0, 2).map((k) => [k.value, k.label]), [["link", "Link"], ["login", "Login"]]);
+});
+
+test("a new item starts as a link, except in a kind's own list and the account lists", () => {
+  for (const scope of [{ view: "all" }, { view: "favorites" }, { view: "trash" }, { spaceId: "mock-space" }, { heldFor: "Mock Person" }]) assert.equal(newKindFor(scope), "link");
+  for (const view of ["note", "key", "link", "thing", "device", "id", "login"]) assert.equal(newKindFor({ view }), view);
+  for (const view of ["totp", "security", "closing", "closed"]) assert.equal(newKindFor({ view }), "login");
 });
 
 test("every link type, device type and grab choice core has comes with a label in the phone's list", () => {

@@ -141,6 +141,40 @@ test("a re-import over a trashed import adds the items back", async () => {
   assert.equal(out.vault.entries.length, 1);
 });
 
+const BOOKMARKS = "<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<DL><p><DT><A HREF=\"https://example.com/mock\">Mock Page</A></DL>";
+
+test("a bookmarks file reads as a source and is never shredded, clean import or not", async () => {
+  const dir = tempDir();
+  const html = write(dir, "bookmarks.html", BOOKMARKS);
+  assert.equal(readImportFile(html).source, "bookmarks");
+  const vault = await session();
+  const realRm = fs.rmSync;
+  const realWrite = fs.writeSync;
+  const touched = [];
+  fs.rmSync = (...a) => (touched.push(a[0]), realRm(...a));
+  fs.writeSync = (...a) => (touched.push("write"), realWrite(...a));
+  let out;
+  try {
+    out = importPicked(html, vault);
+  } finally {
+    fs.rmSync = realRm;
+    fs.writeSync = realWrite;
+  }
+  assert.deepEqual([out.ok, out.added, out.kept, out.deleted, out.plain], [true, 1, 0, false, true]);
+  assert.deepEqual(touched, [], "nothing was zeroed or removed");
+  assert.equal(fs.readFileSync(html, "utf8"), BOOKMARKS, "the file is untouched");
+  const again = importPicked(html, vault);
+  assert.deepEqual([again.added, again.skipped, again.deleted, again.plain], [0, 1, false, true]);
+  assert.equal(fs.existsSync(html), true);
+});
+
+test("a bookmarks file with a bookmark that could not be imported keeps the file too", async () => {
+  const html = write(tempDir(), "bookmarks.htm", BOOKMARKS.replace("</DL>", '<DT><A HREF="javascript:void(0)">Mock Bookmarklet</A></DL>'));
+  const out = importPicked(html, await session());
+  assert.deepEqual([out.added, out.kept, out.deleted, out.plain], [1, 1, false, true]);
+  assert.equal(fs.existsSync(html), true);
+});
+
 test("a row that could not be imported keeps the file and says how many", async () => {
   const dir = tempDir();
   const file = write(dir, "bitwarden.json", JSON.stringify({ encrypted: false, folders: [], items: [{ type: 2, name: "Mock note", notes: "text" }, { type: 99, name: "Mock future type" }] }));

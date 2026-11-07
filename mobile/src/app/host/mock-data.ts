@@ -30,7 +30,29 @@ const base = (id: string, title: string, space: keyof typeof SPACES, extra: Reco
 export const NOTE_ID = "e-notes";
 export const CONFLICT_ID = "e-notes-copy";
 
+// ?mock&links swaps in a links-first sample for product screenshots. Dev-only like the rest of this file.
+function linksVault() {
+  const L = (id: string, title: string, linkType: string, location: string, extra: Record<string, unknown> = {}) =>
+    ({ ...base(id, title, "nw", extra), kind: "link", linkType, location });
+  return {
+    spaces: Object.values(SPACES).map((s) => (s.id === "sp-nw" ? { ...s, name: "Northwind Studio" } : { ...s })),
+    entries: [
+      L("l-brand", "Brand assets", "drive", "https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOpQrStUv", { favorite: true }),
+      L("l-q4", "Q4 reports", "drive", "https://drive.google.com/drive/folders/1ZyXwVuTsRqPoNmLkJiHgFe", { favorite: true }),
+      L("l-prop", "Proposal - Northwind", "doc", "https://docs.google.com/document/d/1ExampleDocId0000000000"),
+      L("l-files", "Client files", "folder", "D:\\Clients\\Northwind Studio"),
+      L("l-site", "Northwind website", "web", "https://northwind.example.com"),
+      L("l-canva", "Canva board", "web", "https://www.canva.com/design/example"),
+      L("l-wiki", "Notion wiki", "web", "https://www.notion.so/example-wiki"),
+      L("l-ghl", "GoHighLevel dashboard", "web", "https://app.gohighlevel.com"),
+      { ...base("e-github", "GitHub", "personal"), kind: "login", username: "sam.reyes@example.com", password: REUSED, url: "https://github.com", signIn: "password", passwordChangedAt: day(-20) },
+      { ...base("e-gmail", "Gmail", "personal"), kind: "login", username: "sam.home@example.com", password: "Lantern-Mango-Quiet-47", url: "https://mail.google.com", signIn: "password", passwordChangedAt: day(-30) }, // gitleaks:allow
+    ],
+  };
+}
+
 export function mockVault() {
+  if (new URLSearchParams(window.location.search).has("links")) return linksVault();
   return {
     spaces: Object.values(SPACES).map((s) => ({ ...s })),
     entries: [

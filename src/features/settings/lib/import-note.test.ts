@@ -12,6 +12,12 @@ test("every branch that leaves the file on disk says it holds passwords in plain
   assert.match(stuck, /every password in plain text/);
 });
 
+test("a bookmarks file is left alone and the page says nothing about deleting it", () => {
+  const lines = importLines({ ...base, deleted: false, plain: true, source: "Browser bookmarks (HTML)" }).join("\n");
+  assert.match(lines, /Added 2 items from Browser bookmarks/);
+  assert.doesNotMatch(lines, /delete|plain text/i);
+});
+
 test("a deleted file says it held the passwords in plain text", () => {
   assert.match(importLines(base).join("\n"), /The file was deleted\. It held every password in plain text\./);
 });

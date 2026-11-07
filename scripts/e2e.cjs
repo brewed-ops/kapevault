@@ -85,6 +85,7 @@ const launch = () =>
 
   // New login
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByPlaceholder("GitHub").fill("GHL agency login");
   check("space defaults to current client", (await dialog.locator("select").first().inputValue()) !== "");
@@ -148,9 +149,9 @@ const launch = () =>
   await page.getByRole("button", { name: "Reveal" }).click();
   check("edit keeps stored password", await shows(page.getByText("Pw-123456!")));
 
-  // New file link: real folder + missing folder
+  // New link: real folder + missing folder
   await page.getByRole("button", { name: "New" }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "File link" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Link", exact: true }).click();
   await page.getByRole("dialog").getByPlaceholder("GitHub").fill("Client folder");
   await page.getByRole("dialog").locator("select").nth(1).selectOption("folder");
   await page.getByRole("dialog").getByPlaceholder(/drive.google.com/).fill(dataDir);
@@ -169,8 +170,8 @@ const launch = () =>
   // Sidebar views + search
   await page.locator("aside").getByText("Logins").click();
   check("Logins view filters", (await page.locator("section li").count()) === 1);
-  await page.locator("aside").getByText("File links").click();
-  check("File links view filters", (await page.locator("section li").count()) === 1);
+  await page.locator("aside").getByText("Links", { exact: true }).click();
+  check("Links view filters", (await page.locator("section li").count()) === 1);
   await page.locator("aside").getByText("Personal").click();
   check("Personal space holds the new link (default space)", await shows(page.locator("section li", { hasText: "Client folder" })));
   await page.locator("aside").getByText("All items").click();
@@ -316,6 +317,7 @@ const launch = () =>
 
   // Sign in with Google: no password, linked to the saved Google account
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await page.getByRole("dialog").getByPlaceholder("GitHub").fill("Gmail");
   await page.getByRole("dialog").getByText("Username or email").locator("..").locator("input").fill("sam.reyes.mock@gmail.com");
   await page.getByRole("dialog").getByText("Password", { exact: true }).locator("..").locator("input").fill("gmail-pass-1");
@@ -323,12 +325,14 @@ const launch = () =>
   await page.getByRole("dialog").getByRole("button", { name: "Save" }).click();
   await gone(page.getByRole("dialog"));
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await page.getByRole("dialog").getByPlaceholder("GitHub").fill("Facebook");
   await page.getByRole("dialog").getByText("Username or email").locator("..").locator("input").fill("me@example.com");
   await page.getByRole("dialog").getByPlaceholder("https://", { exact: true }).fill("https://www.facebook.com");
   await page.getByRole("dialog").getByRole("button", { name: "Save" }).click();
   await gone(page.getByRole("dialog"));
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   const oauth = page.getByRole("dialog");
   await oauth.getByPlaceholder("GitHub").fill("Canva");
   await oauth.getByRole("radio", { name: "Google", exact: true }).click();
@@ -398,7 +402,7 @@ const launch = () =>
   fs.writeFileSync(path.join(sample, "i-chime.wav"), wav);
 
   await page.getByRole("button", { name: "New" }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "File link" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Link", exact: true }).click();
   await page.getByRole("dialog").getByPlaceholder("GitHub").fill("Sample files");
   await page.getByRole("dialog").locator("select").nth(1).selectOption("folder");
   await page.getByRole("dialog").getByPlaceholder(/drive.google.com/).fill(sample);

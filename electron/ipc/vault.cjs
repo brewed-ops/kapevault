@@ -203,7 +203,7 @@ function register({ handle, attempt, requireUnlocked, vault, biometric, sync, cl
   handle("vault:import", async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog(windows.main(), {
       title: "Import into KAPEVault",
-      filters: [{ name: "Password export or KAPEVault import", extensions: ["json", "csv"] }],
+      filters: [{ name: "Password export, bookmarks or KAPEVault import", extensions: ["json", "csv", "html", "htm"] }],
       properties: ["openFile", "dontAddToRecent"],
     });
     if (canceled || !filePaths[0]) return { ok: false, canceled: true };

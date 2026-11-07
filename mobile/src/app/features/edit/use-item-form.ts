@@ -46,13 +46,13 @@ export interface Draft {
 
 export type SetDraft = <K extends keyof Draft>(field: K, value: Draft[K]) => void;
 
-function draftFrom(e: Entry | null, spaceId: string, heldFor: string): Draft {
+function draftFrom(e: Entry | null, spaceId: string, heldFor: string, newKind: EntryKind): Draft {
   const pick = <K extends EntryKind>(kind: K) => (e?.kind === kind ? (e as Extract<Entry, { kind: K }>) : null);
   const login = pick("login"), key = pick("key"), note = pick("note"), link = pick("link"), thing = pick("thing"), device = pick("device"), id = pick("id");
   // An ID saved untitled is its type: on edit the title keeps following it.
   const followsAuto = id && id.title === id.idType;
   return {
-    kind: e?.kind ?? "login",
+    kind: e?.kind ?? newKind,
     title: followsAuto ? "" : (e?.title ?? ""),
     spaceId: e?.spaceId ?? spaceId,
     notes: e?.notes ?? "",
@@ -93,9 +93,9 @@ function draftFrom(e: Entry | null, spaceId: string, heldFor: string): Draft {
 
 const orKeep = (v: string | null) => v ?? undefined;
 
-export function useItemForm(entry: Entry | null, defaultSpaceId: string, defaultHeldFor = "") {
+export function useItemForm(entry: Entry | null, defaultSpaceId: string, defaultHeldFor = "", defaultKind: EntryKind = "link") {
   const host = useHost();
-  const [draft, setDraft] = useState(() => draftFrom(entry, defaultSpaceId, defaultHeldFor));
+  const [draft, setDraft] = useState(() => draftFrom(entry, defaultSpaceId, defaultHeldFor, defaultKind));
   const set: SetDraft = (field, value) => setDraft((d) => ({ ...d, [field]: value }));
 
   // Editing loads the stored secrets into their fields, each only if nothing was typed while it loaded.

@@ -17,6 +17,7 @@ import { SidebarDrawer } from "./SidebarDrawer";
 import { SyncLine, SyncSheet } from "./SyncSheet";
 import { TabBar, type Tab } from "./TabBar";
 import type { Entry } from "../../host/types";
+import { newKindFor } from "../../lib/entries";
 
 const TAB_LISTS: Record<"codes" | "security", { scope: ListScope; title: string }> = {
   codes: { scope: { view: "totp" }, title: "2FA codes" },
@@ -163,6 +164,7 @@ export function HomeScreen({ startTab, onRestoreFile }: { startTab: Tab; onResto
           spaces={view.spaces}
           defaultSpaceId={defaultSpace}
           defaultHeldFor={tab === "items" && "heldFor" in scope ? scope.heldFor : ""}
+          defaultKind={newKindFor(list.scope)}
           pro={owned}
           onSaved={(id) => !editing.entry && openItem(id)}
           onDeleted={() => closeItem()}

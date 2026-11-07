@@ -38,10 +38,10 @@ interface EntryFormProps {
 }
 
 const KINDS: { value: EntryKind; label: string }[] = [
+  { value: "link", label: "Link" },
   { value: "login", label: "Login" },
   { value: "note", label: "Secure note" },
   { value: "key", label: "API key" },
-  { value: "link", label: "File link" },
   { value: "thing", label: "Thing" },
   { value: "device", label: "Device" },
   { value: "id", label: "ID" },

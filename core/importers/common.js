@@ -53,7 +53,7 @@ export function collector() {
   const skipEmpty = (row, reason) => skipped.push({ row, reason, harmless: true });
 
   function add(row, item) {
-    const signature = JSON.stringify([item.kind, item.title.toLowerCase(), item.username, item.password, item.url, item.totp, item.body, item.keyId, item.secret, item.notes]);
+    const signature = JSON.stringify([item.kind, item.title.toLowerCase(), item.username, item.password, item.url, item.totp, item.body, item.keyId, item.secret, item.location, item.linkType, item.notes]);
     if (seen.has(signature)) return skipEmpty(row, "Same item as an earlier row");
     seen.add(signature);
     // The same cap core/import.js enforces, applied while collecting so a crafted file stops here.
@@ -136,5 +136,12 @@ export function collector() {
     return { items, skipped, notes };
   }
 
-  return { login, note, key, skip, skipEmpty, counts, result };
+  /** @param {number} row @param {{ title?: string, location?: string, linkType?: string, notes?: string, tags?: string[], favorite?: boolean }} f */
+  function link(row, f) {
+    const location = text(f.location);
+    if (!location) return skipEmpty(row, "Link with no address");
+    add(row, { kind: "link", title: text(f.title) || hostOf(location) || location, linkType: f.linkType ?? "web", location, notes: text(f.notes), tags: f.tags ?? [], favorite: f.favorite === true });
+  }
+
+  return { login, note, key, link, skip, skipEmpty, counts, result };
 }

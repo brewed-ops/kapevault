@@ -2,7 +2,7 @@
   "name": "kapevault",
   "productName": "KAPEVault",
   "private": true,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "GPL-3.0-only",
   "author": {
     "name": "BrewedOps",
@@ -46,7 +46,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^6.0.2",
-    "electron": "^44.5.1",
+    "electron": "^44.9.1",
     "electron-builder": "^26.15.3",
     "semver": "^7.8.5",
     "tailwindcss": "^4.3.3",
@@ -124,9 +124,9 @@
       "hardenedRuntime": false,
       "darkModeSupport": true,
       "extendInfo": {
-        "NSDesktopFolderUsageDescription": "KAPEVault shows the folders you saved as file links.",
-        "NSDocumentsFolderUsageDescription": "KAPEVault shows the folders you saved as file links.",
-        "NSDownloadsFolderUsageDescription": "KAPEVault shows the folders you saved as file links."
+        "NSDesktopFolderUsageDescription": "KAPEVault shows the folders you saved as links.",
+        "NSDocumentsFolderUsageDescription": "KAPEVault shows the folders you saved as links.",
+        "NSDownloadsFolderUsageDescription": "KAPEVault shows the folders you saved as links."
       }
     },
     "dmg": {

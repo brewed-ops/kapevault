@@ -31,12 +31,12 @@ interface SidebarDrawerProps {
 
 const SMART: { view: ViewFilter; label: string; tone: string; icon: ReactNode; always?: boolean }[] = [
   { view: "all", label: "All items", tone: "--color-sys-blue", icon: <SquaresFour size={13} weight="fill" />, always: true },
+  { view: "link", label: "Links", tone: "--color-sys-green", icon: <Link size={13} weight="bold" />, always: true },
   { view: "favorites", label: "Favorites", tone: "--color-sys-orange", icon: <Star size={13} weight="fill" />, always: true },
   { view: "login", label: "Logins", tone: "--color-sys-teal", icon: <Key size={13} weight="fill" />, always: true },
   { view: "totp", label: "2FA codes", tone: "--color-sys-indigo", icon: <Clock size={13} weight="bold" />, always: true },
   { view: "note", label: "Notes", tone: "--color-sys-orange", icon: <NotePencil size={13} weight="fill" />, always: true },
   { view: "key", label: "API keys", tone: "--color-sys-purple", icon: <Code size={13} weight="bold" />, always: true },
-  { view: "link", label: "File links", tone: "--color-sys-green", icon: <Link size={13} weight="bold" />, always: true },
   { view: "thing", label: "Things", tone: "--color-sys-brown", icon: <Package size={13} weight="fill" /> },
   { view: "device", label: "Devices", tone: "--color-sys-cyan", icon: <Devices size={13} weight="fill" /> },
   { view: "id", label: "IDs", tone: "--color-sys-pink", icon: <IdentificationCard size={13} weight="fill" /> },

@@ -109,7 +109,7 @@ function VaultApp({ initial, onLock }: { initial: VaultView; onLock: () => void 
   }
 
   function newItem() {
-    setForm({ newKind: viewOf(vault.view).newKind ?? "login" }); // a new item starts as the kind of list you are looking at
+    setForm({ newKind: viewOf(vault.view).newKind ?? "link" }); // a new item starts as the kind of list you are looking at; a link from All items, Favorites and Trash
   }
 
   async function toggleFavorite(id: string) {

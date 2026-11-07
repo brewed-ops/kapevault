@@ -116,8 +116,8 @@ export function TrustSheet({ onClose }: { onClose: () => void }) {
               </Point>
             )}
 
-            <Point icon={<FolderSimpleLock size={17} weight="bold" />} title="File links stay safe">
-              <p>KAPEVault only reads the folders you saved as file links. Programs, and office files that can hold macros, are never opened from KAPEVault - they are shown in {explorerName} instead.</p>
+            <Point icon={<FolderSimpleLock size={17} weight="bold" />} title="Links stay safe">
+              <p>KAPEVault only reads the folders you saved as links. Programs, and office files that can hold macros, are never opened from KAPEVault - they are shown in {explorerName} instead.</p>
               <p>
                 Web pages open in previews with their scripts off until you choose to run them, and a preview cannot reach the internet. KAPEVault never
                 asks for your master password inside a preview.

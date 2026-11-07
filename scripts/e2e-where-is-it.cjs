@@ -14,7 +14,7 @@ const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), "kapevault-e2e-things-"));
 const outDir = fs.mkdtempSync(path.join(os.tmpdir(), "kapevault-e2e-things-out-"));
 const { check, launch, report } = createHarness();
 const MASTER = "mock kettle harbor pass orbit gazelle";
-const KINDS = ["Login", "Secure note", "API key", "File link", "Thing", "Device", "ID"];
+const KINDS = ["Link", "Login", "Secure note", "API key", "Thing", "Device", "ID"];
 
 (async () => {
   const { app, page, errors } = await launch({ KAPEVAULT_DATA_DIR: dataDir });
@@ -47,18 +47,18 @@ const KINDS = ["Login", "Secure note", "API key", "File link", "Thing", "Device"
   await page.getByRole("button", { name: "New" }).click();
   await page.waitForTimeout(400);
   check("the picker offers every kind", (await picker.getByRole("button").count()) === KINDS.length && (await shows(tile("Thing"))));
-  check("wide: two rows, four and three", new Set(await tops()).size === 2 && (await tile("Thing").boundingBox()).x === (await tile("Login").boundingBox()).x);
-  check("one Tab stop: only the chosen kind is tabbable", (await picker.locator("button[tabindex='0']").count()) === 1 && (await tile("Login").getAttribute("tabindex")) === "0");
-  await tile("Login").focus();
+  check("wide: two rows, four and three", new Set(await tops()).size === 2 && (await tile("Thing").boundingBox()).x === (await tile("Link").boundingBox()).x);
+  check("one Tab stop: only the chosen kind is tabbable", (await picker.locator("button[tabindex='0']").count()) === 1 && (await tile("Link").getAttribute("tabindex")) === "0");
+  await tile("Link").focus();
   await page.keyboard.press("ArrowRight");
-  check("ArrowRight chooses the next kind and moves focus", (await tile("Secure note").getAttribute("aria-pressed")) === "true" && (await tile("Secure note").evaluate((b) => b === document.activeElement)));
+  check("ArrowRight chooses the next kind and moves focus", (await tile("Login").getAttribute("aria-pressed")) === "true" && (await tile("Login").evaluate((b) => b === document.activeElement)));
   await page.keyboard.press("End");
   check("End chooses the last kind (ID)", (await tile("ID").getAttribute("aria-pressed")) === "true" && (await shows(dialog.getByRole("button", { name: /Add a photo/ }))));
   await page.keyboard.press("ArrowRight");
-  check("the arrows wrap around to the first kind", (await tile("Login").getAttribute("aria-pressed")) === "true");
-  for (let i = 0; i < 4; i += 1) await page.keyboard.press("ArrowLeft"); // ID, Device, Thing, File link
+  check("the arrows wrap around to the first kind", (await tile("Link").getAttribute("aria-pressed")) === "true");
+  for (let i = 0; i < 4; i += 1) await page.keyboard.press("ArrowLeft"); // ID, Device, Thing, API key
   await page.waitForTimeout(100);
-  check("arrowing onto File link keeps focus on the picker (not its Title field)", (await tile("File link").getAttribute("aria-pressed")) === "true" && (await tile("File link").evaluate((b) => b === document.activeElement)));
+  check("arrowing onto API key keeps focus on the picker (not its Title field)", (await tile("API key").getAttribute("aria-pressed")) === "true" && (await tile("API key").evaluate((b) => b === document.activeElement)));
   await page.keyboard.press("ArrowRight");
   await page.waitForTimeout(100);
   check("and off it again", (await tile("Thing").getAttribute("aria-pressed")) === "true" && (await tile("Thing").evaluate((b) => b === document.activeElement)));
@@ -204,7 +204,7 @@ const KINDS = ["Login", "Secure note", "API key", "File link", "Thing", "Device"
   const box = await dialog.boundingBox();
   const inside = async () => (await Promise.all(KINDS.map((k) => tile(k).boundingBox()))).every((b) => b.x >= box.x && b.x + b.width <= box.x + box.width + 0.5 && b.width >= 60);
   check("400 px: every kind tile fits inside the sheet", await inside());
-  check("400 px: the tiles wrap into rows of three", new Set(await tops()).size === 3 && (await tile("API key").boundingBox()).y === (await tile("Login").boundingBox()).y);
+  check("400 px: the tiles wrap into rows of three", new Set(await tops()).size === 3 && (await tile("Secure note").boundingBox()).y === (await tile("Link").boundingBox()).y);
   const labelsFit = await picker.locator("button span.truncate").evaluateAll((spans) => spans.every((s) => s.scrollWidth <= s.clientWidth));
   check("400 px: no kind name is cut off", labelsFit);
   await shot("things-picker-narrow");
@@ -223,7 +223,7 @@ const KINDS = ["Login", "Secure note", "API key", "File link", "Thing", "Device"
       await dialog.getByLabel("Note", { exact: true }).fill("mock body");
     },
     "API key": async () => dialog.getByPlaceholder("GitHub").fill("Mock Narrow Key"),
-    "File link": async () => {
+    Link: async () => {
       await dialog.getByPlaceholder("GitHub").fill("Mock Narrow Link");
       await dialog.getByPlaceholder("https://drive.google.com/... or D:\\Clients\\...").fill("https://example.com/mock");
     },

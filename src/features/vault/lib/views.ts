@@ -2,7 +2,7 @@ import type { EntryKind, ViewFilter } from "../types";
 
 // Every smart list, in sidebar order: its sidebar label, the list's heading, its glyph tint, and
 // whether its row (and the list) goes away once nothing is in it. Which items belong to a view is
-// matchesView (filter-entries.ts); a new item made in a kind's own list starts as that kind.
+// matchesView (filter-entries.ts); a new item made in a kind's own list starts as that kind (the account lists start a login); every other list starts a link.
 export interface ViewDef {
   id: ViewFilter;
   label: string; // sidebar row
@@ -14,18 +14,18 @@ export interface ViewDef {
 
 export const VIEWS: ViewDef[] = [
   { id: "all", label: "All items", heading: "All items", tone: "--color-sys-blue" },
+  { id: "link", label: "Links", heading: "Links", tone: "--color-sys-green", newKind: "link" },
   { id: "favorites", label: "Favorites", heading: "Favorites", tone: "--color-sys-orange" },
-  { id: "login", label: "Logins", heading: "Logins", tone: "--color-sys-teal" },
-  { id: "totp", label: "2FA codes", heading: "2FA codes", tone: "--color-sys-indigo" },
+  { id: "login", label: "Logins", heading: "Logins", tone: "--color-sys-teal", newKind: "login" },
+  { id: "totp", label: "2FA codes", heading: "2FA codes", tone: "--color-sys-indigo", newKind: "login" },
   { id: "note", label: "Notes", heading: "Secure notes", tone: "--color-sys-orange", newKind: "note" },
   { id: "key", label: "API keys", heading: "API keys", tone: "--color-sys-purple", newKind: "key" },
-  { id: "link", label: "File links", heading: "File links", tone: "--color-sys-green", newKind: "link" },
   { id: "thing", label: "Things", heading: "Things", tone: "--color-sys-brown", hideWhenEmpty: true, newKind: "thing" },
   { id: "device", label: "Devices", heading: "Devices", tone: "--color-sys-cyan", hideWhenEmpty: true, newKind: "device" },
   { id: "id", label: "IDs", heading: "IDs", tone: "--color-sys-pink", hideWhenEmpty: true, newKind: "id" },
-  { id: "security", label: "Security", heading: "Security", tone: "--color-sys-red" }, // gray while there is nothing to fix
-  { id: "closing", label: "Closing", heading: "Closing", tone: "--color-sys-orange", hideWhenEmpty: true },
-  { id: "closed", label: "Closed", heading: "Closed", tone: "--color-sys-gray", hideWhenEmpty: true },
+  { id: "security", label: "Security", heading: "Security", tone: "--color-sys-red", newKind: "login" }, // gray while there is nothing to fix
+  { id: "closing", label: "Closing", heading: "Closing", tone: "--color-sys-orange", hideWhenEmpty: true, newKind: "login" },
+  { id: "closed", label: "Closed", heading: "Closed", tone: "--color-sys-gray", hideWhenEmpty: true, newKind: "login" },
   { id: "trash", label: "Trash", heading: "Trash", tone: "--color-sys-gray", hideWhenEmpty: true }, // its row sits at the foot of the sidebar, not with the smart lists
 ];
 

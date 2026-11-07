@@ -57,6 +57,7 @@ function codeMatches(code) {
 
   // ---- Login with generator + 2FA
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByPlaceholder("GitHub").fill("Mock Portal");
   await dialog.getByText("Username or email").locator("..").locator("input").fill("mock.user@example.com");
   await dialog.getByRole("button", { name: "Generate password" }).click();
@@ -97,6 +98,7 @@ function codeMatches(code) {
   // ---- Generated passwords: a value is kept the moment it leaves the generator, so a lock with the item
   // form open and unsaved (Win+L, sleep, idle) cannot take a password already pasted into a site
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByPlaceholder("GitHub").fill("Mock Unsaved Site");
   await dialog.getByRole("button", { name: "Generate password" }).click();
   const generator = page.getByRole("group", { name: "Password generator" });
@@ -114,6 +116,7 @@ function codeMatches(code) {
   await page.getByRole("button", { name: "Lock vault" }).waitFor({ timeout: 8000 });
   check("the lock took the unsaved form", (await page.getByText("Mock Unsaved Site").count()) === 0);
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByRole("button", { name: "Generate password" }).click();
   await generator.waitFor();
   check("after the lock and unlock, Recent still holds both", await shows(generator.getByRole("button", { name: "Recent (2)" })));
@@ -136,12 +139,14 @@ function codeMatches(code) {
 
   // ---- Weak + reused -> Security view
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByPlaceholder("GitHub").fill("Weak Twin");
   await dialog.getByText("Password", { exact: true }).locator("..").locator("input").fill("password1");
   check("strength meter flags a weak password", await shows(dialog.getByText("Very weak")));
   await dialog.getByRole("button", { name: "Save" }).click();
   await gone(dialog);
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByPlaceholder("GitHub").fill("Weak Clone");
   await dialog.getByText("Password", { exact: true }).locator("..").locator("input").fill("password1");
   await dialog.getByRole("button", { name: "Save" }).click();
@@ -334,6 +339,7 @@ function codeMatches(code) {
 
   // Change after the copy, so a restore from the copy is visible
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByPlaceholder("GitHub").fill("Made After Copy");
   await dialog.getByRole("button", { name: "Save" }).click();
   await gone(dialog);
@@ -399,6 +405,7 @@ function codeMatches(code) {
   // password: a confirm alone would let anyone at the keyboard wipe it with a backup of their own.
   const vaultFile = path.join(dataDir, "vault.kapevault");
   await page.getByRole("button", { name: "New" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Login", exact: true }).click();
   await dialog.getByPlaceholder("GitHub").fill("Mock Before Locked Restore");
   await dialog.getByRole("button", { name: "Save" }).click();
   await gone(dialog);

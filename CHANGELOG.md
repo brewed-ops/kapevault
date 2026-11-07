@@ -7,6 +7,37 @@ built and installed by hand; none was tagged.
 
 ## [Unreleased]
 
+## [Windows 0.1.5] - 2026-11-07
+
+The Android changes below ship in the next APK.
+
+### Security
+
+- Windows: Electron 44.9.1 (was 44.5.1). It drops trust in the compromised eMudhra intermediate
+  certificates (GHSA-jr5w-w6x2-84p9), which the app's HTTPS connections (cloud backup, update check) relied on.
+
+### Added
+
+- Windows: Settings > Import reads browser bookmarks (the HTML file Chrome, Edge, Brave and Firefox export).
+  Each web bookmark becomes a link, with its folder as a tag; Google Drive and Docs addresses are saved as
+  Google Drive links. Only http and https addresses come in. Bookmarklets and browser pages are skipped
+  and named. A bookmarks file is never deleted after the import.
+
+### Changed
+
+- Windows and Android: "File links" is now "Links", right under All items, and Link is the first kind in the
+  picker.
+- Windows and Android: New starts a link from All items, Favorites and the Trash. Notes, API keys, Links,
+  Things, Devices, IDs and the account lists (Logins, 2FA codes, Security, Closing, Closed) start their own kind.
+
+### Fixed
+
+- Windows: on a PC whose AppData folder was moved or redirected to a place that is gone, the app showed
+  "A JavaScript error occurred in the main process" at start. It now says which folder it could not
+  create and what to check, and closes without creating or changing anything.
+
+## [Android 0.1.8] - 2026-10-12
+
 ### Security
 
 - Android: a bucket that came inside a restored backup file uploads nothing until you turn on Back up
